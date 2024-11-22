@@ -8,6 +8,7 @@ const app = express();
 // Router constants
 const loginRouter = require("./routes/loginRouter");
 const userRouter = require("./routes/userRouter");
+const messageRouter = require("./routes/messageRouter");
 
 // Set up passport session
 app.use(session({ secret: process.env.SECRET, resave: false, saveUninitialized: false }));
@@ -20,5 +21,6 @@ app.use(express.urlencoded({ extended: true }));
 // Routers
 app.use("/login", loginRouter);
 app.use("/user", userRouter);
+app.use("/message", messageRouter);
 
 app.listen(3000, () => console.log("App listening on port 3000!"));
