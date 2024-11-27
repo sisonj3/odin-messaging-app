@@ -53,16 +53,67 @@ async function deleteUser(name) {
 }
 
 // Create/send message
+async function createMessage(text, recieverId, senderId) {
+    await prisma.message.create({
+        data: {
+            text: text,
+            recieverId: recieverId,
+            senderId: senderId,
+        }
+    });
+}
 
 // Read all messages
+async function getMessages() {
+    const messages = await prisma.message.findMany();
+
+    return messages;
+}
 
 // Read sent messages by user
+async function getSentMessages(senderId) {
+    const messages = await prisma.message.findMany({
+        where: {
+            senderId: senderId,
+        }
+    });
+
+    return messages;
+}
 
 // Read recieved messages by user
+async function getRecievedMessages(recieverId) {
+    const messages = await prisma.message.findMany({
+        where: {
+            recieverId: recieverId,
+        }
+    });
+
+    return messages;
+}
 
 // Update message
+async function updateMessage(senderId, msgId, text) {
+    await prisma.message.update({
+        where: {
+            id: msgId,
+            senderid: senderId,
+        },
+        data: {
+            text: text,
+        },
+    });
+}
 
 // Delete message
+async function deleteMessage(senderId, msgId) {
+    await prisma.message.delete({
+        where: {
+            id: msgId,
+            senderId: senderId,
+        }
+    });
+}
 
 module.exports = {
     createUser,
@@ -70,4 +121,10 @@ module.exports = {
     getUserByUsername,
     updateUser,
     deleteUser,
+    createMessage,
+    getMessages,
+    getSentMessages,
+    getRecievedMessages,
+    updateMessage,
+    deleteMessage,
 }
