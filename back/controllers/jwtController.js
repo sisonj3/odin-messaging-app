@@ -11,6 +11,8 @@ const getJWT = (req, res) => {
             token: token,
             id: req.user.id,
             username: req.user.username,
+            recieved: req.user.recieved,
+            sent: req.user.sent,
         }); 
     });
 };
