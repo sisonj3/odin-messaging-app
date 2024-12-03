@@ -24,6 +24,10 @@ async function getUserByUsername(name) {
     const user = await prisma.user.findUnique({
         where: {
             username: name,
+        },
+        include: {
+            recieved: true,
+            sent: true,
         }
     });
 
