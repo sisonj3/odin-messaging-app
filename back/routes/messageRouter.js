@@ -5,7 +5,7 @@ const { Router } = require('express');
 const messageRouter = Router();
 
 // Create/send message
-messageRouter.put("/", messageController.sendMessage);
+messageRouter.post("/", messageController.sendMessage);
 
 // Read all messages
 messageRouter.get("/", messageController.readMessages);
