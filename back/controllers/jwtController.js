@@ -40,7 +40,19 @@ const verifyToken = (req, res, next) => {
     }
 };
 
+// Check token status before performing callback
+function checkToken(callback) {
+    jwt.verify(req.token, process.env.SECRET, (err, authData) => {
+        if (err) {
+            res.sendStatus(403);
+        } else {
+            callback();
+        }
+    })
+}
+
 module.exports = {
     getJWT,
     verifyToken,
+    checkToken,
 };
