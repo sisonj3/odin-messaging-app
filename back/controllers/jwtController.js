@@ -20,10 +20,14 @@ const getJWT = (req, res) => {
 // Verify JSON Web Token
 const verifyToken = (req, res, next) => {
     // Get auth header value
-    const bearerHeader = req.headers['Authorization'];
+    const bearerHeader = req.headers['authorization'];
+
+    //console.log(bearerHeader);
 
     // Check if bearer is undefined
     if (bearerHeader) {
+        
+
         const bearer = bearerHeader.split(' ');
 
         // Get token from arrray
@@ -39,17 +43,6 @@ const verifyToken = (req, res, next) => {
         res.sendStatus(403);
     }
 };
-
-// Check token status before performing callback
-function checkToken(callback) {
-    jwt.verify(req.token, process.env.SECRET, (err, authData) => {
-        if (err) {
-            res.sendStatus(403);
-        } else {
-            callback();
-        }
-    })
-}
 
 module.exports = {
     getJWT,

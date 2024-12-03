@@ -1,4 +1,5 @@
 const userController = require("../controllers/userController");
+const jwtController = require('../controllers/jwtController');
 
 const { Router } = require('express');
 
@@ -8,15 +9,15 @@ const userRouter = Router();
 userRouter.post("/", userController.createUser);
 
 // Read all users
-userRouter.get("/", userController.readUsers);
+userRouter.get("/", [jwtController.verifyToken, userController.readUsers]);
 
 // Read user with username
-userRouter.get("/:username", userController.readUserByUsername);
+userRouter.get("/:username", [jwtController.verifyToken, userController.readUserByUsername]);
 
 // Update user
-userRouter.put("/:userId", userController.updateUser);
+userRouter.put("/:userId", [jwtController.verifyToken, userController.updateUser]);
 
 // Delete user
-userRouter.delete("/", userController.deleteUser);
+userRouter.delete("/", [jwtController.verifyToken, userController.deleteUser]);
 
 module.exports = userRouter;

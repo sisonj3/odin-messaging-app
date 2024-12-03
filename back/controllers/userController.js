@@ -1,6 +1,7 @@
 const query = require('../prisma/queries');
 const bcrypt = require("bcryptjs");
 const { body, validationResult } = require("express-validator");
+const jwt = require('jsonwebtoken');
 
 // Validate user
 const validate = [
@@ -31,34 +32,64 @@ const createUser = [validate, async (req, res) => {
 
 // Read all users
 const readUsers = async (req, res) => {
-    const users = await query.getUsers();
 
-    return res.json(users);
+    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
+        if (err) {
+            res.sendStatus(403);
+        } else {
+            const users = await query.getUsers();
+
+            return res.json(users);
+        }
+    });
 }
 
 // Read user with username
 const readUserByUsername = async (req, res) => {
-    const user = await query.getUserByUsername(req.params.username);
 
-    return res.json(user);
+    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
+        if (err) {
+            res.sendStatus(403);
+        } else {
+            const user = await query.getUserByUsername(req.params.username);
+
+            return res.json(user);
+        }
+    });
+
+    
 }
 
 // Update user
 const updateUser = async (req, res) => {
 
-    // Bcrypt password
-    bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
-        await query.updateUser(Number(req.params.userId), req.body.username, hashedPassword);
-    });
+    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
+        if (err) {
+            res.sendStatus(403);
+        } else {
+            // Bcrypt password
+            bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
+                await query.updateUser(Number(req.params.userId), req.body.username, hashedPassword);
+            });
 
-    return res.send('PUT: Updated User!');
+            return res.send('PUT: Updated User!');
+        }
+    });
+    
 }
 
 // Delete user
 const deleteUser = async (req, res) => {
-    await query.deleteUser(req.body.username);
+    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
+        if (err) {
+            res.sendStatus(403);
+        } else {
+            await query.deleteUser(req.body.username);
 
-    return res.send('DELETE: Deleted User!');
+            return res.send('DELETE: Deleted User!');
+        }
+    });
+    
 }
 
 module.exports = {
