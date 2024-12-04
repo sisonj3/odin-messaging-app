@@ -47,5 +47,4 @@ const verifyToken = (req, res, next) => {
 module.exports = {
     getJWT,
     verifyToken,
-    checkToken,
 };
