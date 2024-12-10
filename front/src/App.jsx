@@ -1,38 +1,64 @@
 import { useState } from 'react'
 import Login from './components/Login'
+import Home from './components/Home'
 import './App.css'
 
 function App() {
 
-  // Variables
-  let token;
-  let username;
-
   // States
+  const [token, setToken] = useState(undefined);
+  const [username, setUsername] = useState(undefined);
   const [received, setReceived] = useState([]);
   const [sent, setSent] = useState([]);
+  const [users, setUsers] = useState([]);
 
-  const getJWT = async (jwt, user, receivedMsgs, sentMsgs) => {
-    token = jwt;
-    username = user;
-
+  const getJWT = async (jwt, username, receivedMsgs, sentMsgs) => {
+    
+    setToken(jwt);
+    setUsername(username);
     setReceived(receivedMsgs);
     setSent(sentMsgs);
+
+    // Fetch other users
+    fetch('http://localhost:3000/user', {
+        mode: 'cors',
+        method: 'GET',
+        headers: {
+                'authorization': `Bearer ${jwt}`,
+            }
+        })
+        .then(response => response.json())
+        .then(response => {
+            console.log(response);
+
+            let temp = [];
+
+            response.forEach(user => {
+                if (user.username != username) {
+                    temp.push(user);
+                }
+            });
+          
+          setUsers(temp);
+
+        })
+        .catch(error => console.error(error));
 
     console.log(token);
   };
 
   return (
     <>
-      {received.length < 1 ? (
+      {token == undefined ? (
           <Login
             parentGetJWT={getJWT}
           />
       ) : (
-          <div>
-            <p>{received[0].text}</p>
-            <p>{sent[0].text}</p>
-          </div>
+          <Home
+            token={token} 
+            user={username}
+            users={users}
+          />
         )
       }
     </>
