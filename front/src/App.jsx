@@ -58,6 +58,8 @@ function App() {
             token={token} 
             user={username}
             users={users}
+            sent={sent}
+            received={received}
           />
         )
       }
