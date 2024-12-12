@@ -1,4 +1,4 @@
-function Messages({ senderId, receiverId, sent, received }) {
+function Messages({ token, senderId, receiverId, sent, received }) {
 
     console.log("Messages...");
     console.log(sent);
@@ -6,6 +6,24 @@ function Messages({ senderId, receiverId, sent, received }) {
 
     const sendMessage = (event) => {
 
+        let text = event.target[0].value;
+
+        // Send Message
+        fetch('http://localhost:3000/message', {
+            mode: 'cors',
+            method: 'POST',
+            headers: {
+                'authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({text: text, recieverId: receiverId, senderId: senderId}),
+        })
+        .then(response => {
+            console.log(response);
+        })
+        .catch(error => console.error(error));
+
+        event.preventDefault();
     };
 
     return (
@@ -30,7 +48,7 @@ function Messages({ senderId, receiverId, sent, received }) {
                 </div>
             </main>
 
-            <form>
+            <form onSubmit={sendMessage}>
                 <div>
                     <label htmlFor="message">
                         Message: <input type="text" name="message" id="message"/>

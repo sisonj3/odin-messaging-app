@@ -7,6 +7,8 @@ function Home({ token, id, user, users, sent, received }) {
 
     const selectReceiver = (event) => {
         setReceiverId(event.target.dataset.key);
+
+        event.preventDefault();
     }
 
     return (
@@ -25,6 +27,7 @@ function Home({ token, id, user, users, sent, received }) {
                 </nav>
 
                 <Messages
+                    token={token}
                     senderId={id}
                     receiverId={receiverId}
                     sent={sent}
