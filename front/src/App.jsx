@@ -7,14 +7,16 @@ function App() {
 
   // States
   const [token, setToken] = useState(undefined);
+  const [id, setId] = useState(undefined);
   const [username, setUsername] = useState(undefined);
   const [received, setReceived] = useState([]);
   const [sent, setSent] = useState([]);
   const [users, setUsers] = useState([]);
 
-  const getJWT = async (jwt, username, receivedMsgs, sentMsgs) => {
+  const getJWT = async (jwt, id, username, receivedMsgs, sentMsgs) => {
     
     setToken(jwt);
+    setId(id);
     setUsername(username);
     setReceived(receivedMsgs);
     setSent(sentMsgs);
@@ -55,7 +57,8 @@ function App() {
           />
       ) : (
           <Home
-            token={token} 
+            token={token}
+            id={id}
             user={username}
             users={users}
             sent={sent}

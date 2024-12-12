@@ -17,7 +17,7 @@ function Login({ parentGetJWT }) {
         .then(response => response.json())
         .then(response => {
             console.log(response);
-            parentGetJWT(response.token, response.username, response.recieved, response.sent);
+            parentGetJWT(response.token, response.id, response.username, response.recieved, response.sent);
         })
         .catch(error => console.error(error));
 

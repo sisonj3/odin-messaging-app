@@ -1,8 +1,12 @@
-function Messages({ sent, received }) {
+function Messages({ senderId, receiverId, sent, received }) {
 
     console.log("Messages...");
     console.log(sent);
     console.log(received);
+
+    const sendMessage = (event) => {
+
+    };
 
     return (
         <>
